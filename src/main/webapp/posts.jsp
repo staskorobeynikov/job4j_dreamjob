@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="ru.job4j.dream.store.Store" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
@@ -36,7 +35,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Post post : Store.instanceOf().findAll()) { %>
+                    <% for (Post post : Store.instanceOf().findAllPosts()) { %>
                     <tr>
                         <td><%= post.getName() %></td>
                     </tr>
