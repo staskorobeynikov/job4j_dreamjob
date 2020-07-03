@@ -16,7 +16,7 @@ public class CandidateServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         Store.instanceOf().save(
                 new Candidate(
-                        0,
+                        Integer.parseInt(req.getParameter("id")),
                         req.getParameter("name")
                 )
         );

@@ -17,7 +17,7 @@ public class PostServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         Store.instanceOf().save(
                 new Post(
-                        0,
+                        Integer.parseInt(req.getParameter("id")),
                         req.getParameter("name"),
                         req.getParameter("description"),
                         new Timestamp(System.currentTimeMillis())
