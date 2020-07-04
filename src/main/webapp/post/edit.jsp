@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.MemStore" %>
+<%@ page import="ru.job4j.dream.store.PsqlStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page import="java.sql.Timestamp" %>
 <!doctype html>
@@ -26,7 +26,7 @@
     String id = request.getParameter("id");
     Post post = new Post(0, "", "", null);
     if (id != null) {
-        post = MemStore.instanceOf().findPostById(Integer.parseInt(id));
+        post = PsqlStore.instanceOf().findPostById(Integer.parseInt(id));
     }
 %>
 <div class="container pt-3">
