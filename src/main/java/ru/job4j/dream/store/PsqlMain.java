@@ -17,8 +17,8 @@ public class PsqlMain {
         System.out.println(store.findPostById(7).getDescription());
 
         System.out.println();
-        store.save(new Candidate(0, "I am Middle Java Developer"));
-        store.save(new Candidate(3, "Senior Java Developer"));
+        store.save(new Candidate(0, "I am Middle Java Developer", 0));
+        store.save(new Candidate(3, "Senior Java Developer", 0));
         for (Candidate candidate : store.findAllCandidates())  {
             System.out.println(candidate.getId() + " " + candidate.getName());
         }

@@ -9,3 +9,10 @@ CREATE TABLE candidate (
     id SERIAL PRIMARY KEY,
     name TEXT
 );
+
+ALTER TABLE candidate ADD COLUMN photo_id int references photo(id);
+
+CREATE TABLE photo (
+    id SERIAL PRIMARY KEY,
+    title TEXT
+);

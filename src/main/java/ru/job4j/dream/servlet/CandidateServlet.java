@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 public class CandidateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", PsqlStore.instanceOf().findAllCandidates());
+        Collection<Candidate> allCandidates = PsqlStore.instanceOf().findAllCandidates();
+        req.setAttribute("candidates", allCandidates);
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
 
@@ -23,7 +25,8 @@ public class CandidateServlet extends HttpServlet {
         PsqlStore.instanceOf().save(
                 new Candidate(
                         Integer.parseInt(req.getParameter("id")),
-                        req.getParameter("name")
+                        req.getParameter("name"),
+                        Integer.parseInt(req.getParameter("photoId"))
                 )
         );
         resp.sendRedirect(req.getContextPath() + "/candidates.do");

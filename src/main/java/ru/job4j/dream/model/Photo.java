@@ -2,18 +2,19 @@ package ru.job4j.dream.model;
 
 import java.util.Objects;
 
-public class Candidate {
+public class Photo {
 
     private int id;
 
-    private String name;
+    private String title;
 
-    private int photoId;
+    public Photo(String title) {
+        this.title = title;
+    }
 
-    public Candidate(int id, String name, int photoId) {
+    public Photo(int id, String title) {
         this.id = id;
-        this.name = name;
-        this.photoId = photoId;
+        this.title = title;
     }
 
     public int getId() {
@@ -24,20 +25,12 @@ public class Candidate {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPhotoId() {
-        return photoId;
-    }
-
-    public void setPhotoId(int photoId) {
-        this.photoId = photoId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -48,8 +41,8 @@ public class Candidate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Candidate candidate = (Candidate) o;
-        return id == candidate.id;
+        Photo photo = (Photo) o;
+        return id == photo.id;
     }
 
     @Override
