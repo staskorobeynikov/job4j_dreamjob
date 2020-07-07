@@ -16,3 +16,10 @@ CREATE TABLE photo (
     id SERIAL PRIMARY KEY,
     title TEXT
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    password TEXT
+);

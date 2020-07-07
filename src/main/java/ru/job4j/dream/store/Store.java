@@ -3,6 +3,7 @@ package ru.job4j.dream.store;
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,4 +26,8 @@ public interface Store {
     Photo createPhoto(Photo photo);
 
     List<String> findAllNamePhoto();
+
+    User findByEmail(String email);
+
+    User createUser(User user);
 }
