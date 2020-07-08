@@ -18,6 +18,27 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<script>
+    function validate() {
+        let checked = $("#gender").val() === "";
+        let result = true;
+        let answer = '';
+        let fields = [$("#name"), $("#surname"), $("#description")];
+        for (let i = 0; i < fields.length; i++) {
+            if (fields[i].val() === "") {
+                answer += fields[i].attr("placeholder") + "\n";
+                result = false;
+            }
+        }
+        if (checked) {
+            answer += 'Укажите пол';
+        }
+        if (!result) {
+            alert(answer);
+        }
+        return result;
+    }
+</script>
 <body>
 <div class="container-fluid" style="text-align: center">
     <h1>My First Bootstrap Page</h1>
@@ -32,25 +53,25 @@
                 <form>
                     <div class="form-group">
                         <label for="name" style="font-weight: bold">Имя</label>
-                        <input type="text" class="form-control" name="name" id="name">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Введите имя...">
                     </div>
                     <div class="form-group">
                         <label for="surname" style="font-weight: bold">Фамилия</label>
-                        <input type="text" class="form-control" name="name" id="surname">
+                        <input type="text" class="form-control" name="name" id="surname" placeholder="Введите фамилию...">
                     </div>
                     <div class="form-group">
                         <label for="gender" style="font-weight: bold">Пол</label>
-                        <select class="custom-select" id="gender">
-                            <option value="null">Не выбрано</option>
+                        <select class="custom-select" id="gender" name="gender">
+                            <option value="">Не выбрано</option>
                             <option value="male">Мужской</option>
                             <option value="female">Женский</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="description" style="font-weight: bold">Описание</label>
-                        <input type="text" class="form-control" name="password" id="description">
+                        <input type="text" class="form-control" name="password" id="description" placeholder="Добавьте описание...">
                     </div>
-                    <button type="submit" class="btn btn-primary">Отправить данные</button>
+                    <button type="submit" class="btn btn-primary" onclick="validate()">Отправить данные</button>
                 </form>
             </div>
         </div>
