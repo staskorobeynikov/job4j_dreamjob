@@ -38,6 +38,23 @@
         }
         return result;
     }
+
+    function addRow() {
+        if (validate()) {
+            let name = $("#name").val();
+            let surname = $("#surname").val();
+            let description = $("#description").val();
+            let gender = $("#gender").val();
+            $('#table tr:last').after(
+                '<tr>'
+                + '<td>' + name +'</td>'
+                + '<td>' + surname + '</td>'
+                + '<td>' + gender + '</td>'
+                + '<td>' + description + '</td>'
+                + '</tr>'
+            );
+        }
+    }
 </script>
 <body>
 <div class="container-fluid" style="text-align: center">
@@ -71,7 +88,7 @@
                         <label for="description" style="font-weight: bold">Описание</label>
                         <input type="text" class="form-control" name="password" id="description" placeholder="Добавьте описание...">
                     </div>
-                    <button type="submit" class="btn btn-primary" onclick="validate()">Отправить данные</button>
+                    <button type="submit" class="btn btn-primary" onclick="addRow()">Отправить данные</button>
                 </form>
             </div>
         </div>
