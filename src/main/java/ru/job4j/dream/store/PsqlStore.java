@@ -1,10 +1,7 @@
 package ru.job4j.dream.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Photo;
-import ru.job4j.dream.model.Post;
-import ru.job4j.dream.model.User;
+import ru.job4j.dream.model.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -77,7 +74,10 @@ public class PsqlStore implements Store {
     public Collection<Candidate> findAllCandidates() {
         List<Candidate> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate")
+             PreparedStatement ps =  cn.prepareStatement(
+                     "SELECT candidate.id, name, photo_id, c.city FROM candidate "
+                             + "JOIN cities c on candidate.city_id = c.id"
+             )
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -85,7 +85,8 @@ public class PsqlStore implements Store {
                             new Candidate(
                                     it.getInt("id"),
                                     it.getString("name"),
-                                    it.getInt("photo_id")
+                                    it.getInt("photo_id"),
+                                    it.getString("city")
                             )
                     );
                 }
@@ -176,10 +177,11 @@ public class PsqlStore implements Store {
     private Candidate createCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO candidate(name, photo_id) VALUES (?, ?)",
+                     "INSERT INTO candidate(name, photo_id, city_id) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, candidate.getName());
             ps.setInt(2, candidate.getPhotoId());
+            ps.setInt(3, candidate.getCityId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -330,5 +332,27 @@ public class PsqlStore implements Store {
             e.printStackTrace();
         }
         return user;
+    }
+
+    @Override
+    public Collection<City> findAllCity() {
+        List<City> result = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM cities;")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    result.add(
+                            new City(
+                                    it.getInt("id"),
+                                    it.getString("city")
+                            )
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

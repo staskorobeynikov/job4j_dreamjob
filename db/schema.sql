@@ -12,6 +12,8 @@ CREATE TABLE candidate (
 
 ALTER TABLE candidate ADD COLUMN photo_id int references photo(id);
 
+ALTER TABLE candidate ADD COLUMN city_id int references cities(id);
+
 CREATE TABLE photo (
     id SERIAL PRIMARY KEY,
     title TEXT
@@ -22,4 +24,9 @@ CREATE TABLE users (
     name TEXT,
     email TEXT,
     password TEXT
+);
+
+CREATE TABLE cities (
+    id SERIAL PRIMARY KEY,
+    city TEXT
 );

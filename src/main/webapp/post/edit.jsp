@@ -21,6 +21,24 @@
 
     <title>Работа мечты</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
+<script>
+    function validate() {
+        let fields = [$("#name"), $("#description")];
+        let result = true;
+        let answer = '';
+        for (let i = 0; i < fields.length; i++) {
+            if (fields[i].val() === "") {
+                answer += fields[i].attr("placeholder") + "\n";
+                result = false;
+            }
+        }
+        if (!result) {
+            alert(answer);
+        }
+        return result;
+    }
+</script>
 <body>
 <%
     String id = request.getParameter("id");
@@ -42,14 +60,14 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<%=post.getName()%>" placeholder="Введите ваше имя...">
                     </div>
                     <div class="form-group">
-                        <label>Описание</label>
-                        <input type="text" class="form-control" name="description" value="<%=post.getDescription()%>">
+                        <label for="description">Описание</label>
+                        <input type="text" class="form-control" id="description" name="description" value="<%=post.getDescription()%>" placeholder="Введите описание...">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="validate()">Сохранить</button>
                 </form>
             </div>
         </div>

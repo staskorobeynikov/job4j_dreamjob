@@ -50,6 +50,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
+                        <th scope="col">Город</th>
                         <th scope="col">Фото</th>
                     </tr>
                     </thead>
@@ -61,6 +62,9 @@
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
                                 <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <c:out value="${candidate.city}"/>
                             </td>
                             <td>
                                 <table>

@@ -1,9 +1,6 @@
 package ru.job4j.dream.store;
 
-import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Photo;
-import ru.job4j.dream.model.Post;
-import ru.job4j.dream.model.User;
+import ru.job4j.dream.model.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -114,5 +111,10 @@ public class MemStore implements Store {
         }
         users.put(user.getId(), user);
         return user;
+    }
+
+    @Override
+    public Collection<City> findAllCity() {
+        return null;
     }
 }

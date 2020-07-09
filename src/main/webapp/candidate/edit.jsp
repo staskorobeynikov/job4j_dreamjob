@@ -19,9 +19,38 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
     <title>Работа мечты</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
+<script>
+    function validate() {
+        let field = $("#name");
+        let result = true;
+        let answer = '';
+        if (field.val() === "") {
+            answer += field.attr("placeholder") + "\n";
+            result = false;
+        }
+        if (!result) {
+            alert(answer);
+        }
+        return result;
+    }
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "./cities",
+            dataType: "json",
+            success: function (data) {
+                let cities = "";
+                for (let i = 0; i < data.length; i++) {
+                    cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
+                }
+                $('#city').html(cities);
+            }
+        })
+    })
+</script>
 <body>
 <%
     String id = request.getParameter("id");
@@ -53,11 +82,17 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<%=candidate.getName()%>" placeholder="Введите ваше имя...">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Город</label>
+                        <select class="custom-select" id="city" name="city">
+
+                        </select>
                         <input type="hidden" name="photoId" value="<%=photoId%>">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary" onclick="validate()">Сохранить</button>
                 </form>
             </div>
         </div>
