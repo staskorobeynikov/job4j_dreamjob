@@ -24,10 +24,10 @@
         $.ajax({
                 type: 'GET',
                 url: './greet',
-                data: 'name=' + $('#exampleInputEmail1').val(),
-                dataType: 'text'
+                data: {name : $('#exampleInputEmail1').val()},
+                dataType: 'json'
             }).done(function (data) {
-                alert(data);
+                alert(data['text']);
             }).fail(function (err) {
                 alert(err);
             }
