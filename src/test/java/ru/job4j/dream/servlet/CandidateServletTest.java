@@ -61,6 +61,7 @@ public class CandidateServletTest {
         when(req.getParameter("id")).thenReturn(String.valueOf(0));
         when(req.getParameter("name")).thenReturn("Junior Java Developer");
         when(req.getParameter("photoId")).thenReturn(String.valueOf(20));
+        when(req.getParameter("city")).thenReturn(String.valueOf(20));
 
         new CandidateServlet().doPost(req, resp);
         List<Candidate> list = new ArrayList<>(store.findAllCandidates());
