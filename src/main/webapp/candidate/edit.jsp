@@ -22,35 +22,7 @@
     <title>Работа мечты</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
-<script>
-    function validate() {
-        let field = $("#name");
-        let result = true;
-        let answer = '';
-        if (field.val() === "") {
-            answer += field.attr("placeholder") + "\n";
-            result = false;
-        }
-        if (!result) {
-            alert(answer);
-        }
-        return result;
-    }
-    $(document).ready(function () {
-        $.ajax({
-            type: "POST",
-            url: "./cities",
-            dataType: "json",
-            success: function (data) {
-                let cities = "";
-                for (let i = 0; i < data.length; i++) {
-                    cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
-                }
-                $('#city').html(cities);
-            }
-        })
-    })
-</script>
+
 <body>
 <%
     String id = request.getParameter("id");
@@ -98,5 +70,34 @@
         </div>
     </div>
 </div>
+<script>
+    function validate() {
+        let field = $("#name");
+        let result = true;
+        let answer = '';
+        if (field.val() === "") {
+            answer += field.attr("placeholder") + "\n";
+            result = false;
+        }
+        if (!result) {
+            alert(answer);
+        }
+        return result;
+    }
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/dreamjob/cities",
+            dataType: "json",
+            success: function (data) {
+                let cities = "";
+                for (let i = 0; i < data.length; i++) {
+                    cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
+                }
+                $('#city').html(cities);
+            }
+        })
+    })
+</script>
 </body>
 </html>

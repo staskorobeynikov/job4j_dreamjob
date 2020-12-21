@@ -14,7 +14,7 @@ import java.util.List;
 public class CityServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<City> list = (List<City>) PsqlStore.instanceOf().findAllCity();
         ObjectMapper mapper = new ObjectMapper();
         String string = mapper.writeValueAsString(list);
