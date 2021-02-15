@@ -197,11 +197,12 @@ public class PsqlStore implements Store {
     private void updateCandidate(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "UPDATE candidate SET name = ? WHERE id = ?"
+                     "UPDATE candidate SET name = ?, city_id = ? WHERE id = ?"
              )
         ) {
             ps.setString(1, candidate.getName());
-            ps.setInt(2, candidate.getId());
+            ps.setInt(2, candidate.getCityId());
+            ps.setInt(3, candidate.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,7 +214,9 @@ public class PsqlStore implements Store {
         Candidate result = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "SELECT * FROM candidate WHERE id = ?"
+                     "SELECT * FROM candidate "
+                             + "join cities c on c.id = candidate.city_id "
+                             + "WHERE candidate.id = ?"
              )
         ) {
             ps.setInt(1, id);
@@ -222,7 +225,9 @@ public class PsqlStore implements Store {
                 result = new Candidate(
                         rs.getInt(1),
                         rs.getString("name"),
-                        rs.getInt("photo_id")
+                        rs.getInt("photo_id"),
+                        rs.getInt("city_id"),
+                        rs.getString("city")
                 );
             }
         } catch (Exception e) {

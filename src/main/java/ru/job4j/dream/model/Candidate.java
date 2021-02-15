@@ -34,6 +34,14 @@ public class Candidate {
         this.city = city;
     }
 
+    public Candidate(int id, String name, int photoId, int cityId, String city) {
+        this.id = id;
+        this.name = name;
+        this.photoId = photoId;
+        this.cityId = cityId;
+        this.city = city;
+    }
+
     public int getId() {
         return id;
     }

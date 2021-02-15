@@ -26,7 +26,7 @@ public class UploadServlet extends HttpServlet {
         String redict = "";
         if (req.getAttribute("photoId") == null) {
             List<String> images = new ArrayList<>();
-            for (File name : new File("images").listFiles()) {
+            for (File name : new File("c:/bin/images").listFiles()) {
                 images.add(name.getName());
             }
             req.setAttribute("images", images);

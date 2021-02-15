@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="ru.job4j.dream.store.PsqlStore" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
 <!doctype html>
 <html lang="en">
@@ -60,7 +59,7 @@
                     <div class="form-group">
                         <label for="city">Город</label>
                         <select class="custom-select" id="city" name="city">
-
+                            <option value="<%=candidate.getCityId()%>" selected><%=candidate.getCity()%></option>
                         </select>
                         <input type="hidden" name="photoId" value="<%=photoId%>">
                     </div>
@@ -94,7 +93,7 @@
                 for (let i = 0; i < data.length; i++) {
                     cities += "<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>";
                 }
-                $('#city').html(cities);
+                $('#city option:last').after(cities);
             }
         })
     })
