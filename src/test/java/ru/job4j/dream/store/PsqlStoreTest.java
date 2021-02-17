@@ -18,14 +18,14 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class PsqlStoreTest {
-    private Store init(String fileName)
+    private Store init(String fileName, boolean flag)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         BasicDataSource pool = new BasicDataSource();
         pool.setDriverClassName("org.hsqldb.jdbcDriver");
         pool.setUrl("jdbc:hsqldb:mem:dreamjob;sql.syntax_pgs=true");
         pool.setUsername("sa");
         pool.setPassword("");
-        pool.setMaxTotal(2);
+        pool.setMaxTotal(5);
         StringBuilder builder = new StringBuilder();
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName)))
@@ -35,6 +35,14 @@ public class PsqlStoreTest {
             e.printStackTrace();
         }
         pool.getConnection().prepareStatement(builder.toString()).executeUpdate();
+        if (flag) {
+            pool.getConnection().prepareStatement(
+                    "CREATE TABLE cities (id serial, city VARCHAR(50), PRIMARY KEY (id))"
+            ).executeUpdate();
+            pool.getConnection().prepareStatement(
+                    "INSERT into cities (city) values ('city1')"
+            ).executeUpdate();
+        }
         Store store = PsqlStore.instanceOf();
         Field field = store.getClass().getDeclaredField("pool");
         field.setAccessible(true);
@@ -45,7 +53,7 @@ public class PsqlStoreTest {
     @Test
     public void whenTestMethodForPost()
             throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_002.sql");
+        Store store = this.init("./db/update_002.sql", false);
 
         store.save(new Post(0, "name1", "desc1", new Timestamp(System.currentTimeMillis())));
         store.save(new Post(1, "name2", "desc2", new Timestamp(System.currentTimeMillis())));
@@ -60,10 +68,10 @@ public class PsqlStoreTest {
     @Test
     public void whenTestMethodForCandidate()
             throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_001.sql");
+        Store store = this.init("./db/update_001.sql", true);
 
         store.save(new Candidate(0, "name1", 1, 1));
-        store.save(new Candidate(1, "name10", 1));
+        store.save(new Candidate(1, "name10", 1, 1));
 
         Candidate candidate = store.findCandidateById(1);
 
@@ -73,7 +81,7 @@ public class PsqlStoreTest {
     @Test
     public void whenTestMethodForPhoto()
             throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_003.sql");
+        Store store = this.init("./db/update_003.sql", false);
 
         store.createPhoto(new Photo("name1"));
         store.createPhoto(new Photo("name100"));
@@ -88,7 +96,7 @@ public class PsqlStoreTest {
     @Test
     public void whenTestMethodForUser()
             throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_004.sql");
+        Store store = this.init("./db/update_004.sql", false);
 
         store.createUser(new User(0, "root", "root@local", "root"));
         store.createUser(new User(0, "root100", "root100@local", "root"));
