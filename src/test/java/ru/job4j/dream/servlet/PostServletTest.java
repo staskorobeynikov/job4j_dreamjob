@@ -2,7 +2,6 @@ package ru.job4j.dream.servlet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -18,12 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -39,7 +36,6 @@ public class PostServletTest {
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
         HttpSession session = mock(HttpSession.class);
 
-
         PowerMockito.mockStatic(PsqlStore.class);
 
         Store store = MemStore.instanceOf();
@@ -47,19 +43,6 @@ public class PostServletTest {
         when(PsqlStore.instanceOf()).thenReturn(store);
         when(req.getSession()).thenReturn(session);
         when(req.getRequestDispatcher(any())).thenReturn(dispatcher);
-        ArgumentCaptor<HttpServletRequest> value = ArgumentCaptor.forClass(HttpServletRequest.class);
-        doNothing().when(req).setAttribute(any(String.class), value.capture());
-        req.setAttribute("posts", List.of(new Post(1, "fdfd", "dsdsds", new Timestamp(System.currentTimeMillis()))));
-//        doAnswer(i -> {
-//            Object argument = i.getArgument(0);
-//            Object argument1 = i.getArgument(1);
-//            assertEquals("posts", argument);
-//            assertEquals(argument1, List.of(new Post(1, "fdfd", "dsdsds", new Timestamp(System.currentTimeMillis()))));
-//            return null;
-//        }).when(req).setAttribute(any(String.class), any(List.class));
-//        req.setAttribute("posts", List.of(new Post(1, "fdfd", "dsdsds", new Timestamp(System.currentTimeMillis()))));
-
-        Object posts = value.getValue();
 
         new PostServlet().doGet(req, resp);
 
