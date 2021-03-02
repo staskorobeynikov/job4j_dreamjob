@@ -58,4 +58,24 @@ public class RegServletTest {
         verify(resp).sendRedirect(String.format("%s/login.jsp", req.getContextPath()));
         assertThat(result.getName(), is("Admin2"));
     }
+
+    @Test
+    public void whenDoPostNotUniqueEmailAndRedirectViewRegJSP() throws ServletException, IOException {
+        HttpServletRequest req = mock(HttpServletRequest.class);
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        PowerMockito.mockStatic(PsqlStore.class);
+
+        Store store = MemStore.instanceOf();
+
+        when(PsqlStore.instanceOf()).thenReturn(store);
+        when(req.getParameter("name")).thenReturn("Admin2");
+        when(req.getParameter("email")).thenReturn("root@local");
+        when(req.getParameter("password")).thenReturn("root");
+        when(req.getRequestDispatcher(any())).thenReturn(dispatcher);
+
+        new RegServlet().doPost(req, resp);
+
+        verify(req).getRequestDispatcher("reg.jsp");
+    }
 }

@@ -18,8 +18,20 @@ public class RegServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
         String email = req.getParameter("email");
+        User byEmail = PsqlStore.instanceOf().findByEmail(email);
+        if (byEmail != null) {
+            req.setAttribute(
+                    "error",
+                    String.format(
+                            "Пользователь с email: %s уже зарегистрирован.",
+                            email
+                    )
+            );
+            req.getRequestDispatcher("reg.jsp").forward(req, resp);
+            return;
+        }
+        String name = req.getParameter("name");
         String password = req.getParameter("password");
         PsqlStore.instanceOf().createUser(
                 new User(
