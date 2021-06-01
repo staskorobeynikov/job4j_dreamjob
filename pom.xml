@@ -100,12 +100,20 @@
       <artifactId>jackson-databind</artifactId>
       <version>${version.jackson}</version>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>2.5.1</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.14.1</version>
     </dependency>
   </dependencies>
   <build>
