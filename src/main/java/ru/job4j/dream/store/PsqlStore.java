@@ -75,6 +75,32 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public Collection<Post> findPostsLastDay() {
+        List<Post> result = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT * FROM post as p "
+                             + "WHERE p.created between now() - interval '24 hours' and now()")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    result.add(
+                            new Post(
+                                    it.getInt("id"),
+                                    it.getString("name"),
+                                    it.getString("description"),
+                                    it.getTimestamp(4)
+                            )
+                    );
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return result;
+    }
+
+    @Override
     public Collection<Candidate> findAllCandidates() {
         List<Candidate> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();

@@ -27,6 +27,37 @@
                 Сегодняшние вакансии.
             </div>
             <div class="card-body">
+                <c:choose>
+                    <c:when test="${size == 0}">
+                        Новых вакансий за сегодня нет
+                    </c:when>
+                    <c:when test="${size != 0}">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Названия</th>
+                                <th scope="col">Описание</th>
+                                <th scope="col">Дата создания</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${lastDay}" var="post">
+                                <tr>
+                                    <td>
+                                        <c:out value="${post.name}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${post.description}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${post.created}"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:when>
+                </c:choose>
             </div>
         </div>
     </div>

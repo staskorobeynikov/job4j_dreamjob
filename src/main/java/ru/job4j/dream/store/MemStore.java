@@ -46,6 +46,11 @@ public class MemStore implements Store {
     }
 
     @Override
+    public Collection<Post> findPostsLastDay() {
+        return new ArrayList<>();
+    }
+
+    @Override
     public Collection<Candidate> findAllCandidates() {
         return candidates.values();
     }

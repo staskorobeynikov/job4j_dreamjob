@@ -8,6 +8,8 @@ import java.util.List;
 public interface Store {
     Collection<Post> findAllPosts();
 
+    Collection<Post> findPostsLastDay();
+
     Collection<Candidate> findAllCandidates();
 
     void save(Post post);
