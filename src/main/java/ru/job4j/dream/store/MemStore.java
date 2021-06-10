@@ -120,6 +120,6 @@ public class MemStore implements Store {
 
     @Override
     public Collection<City> findAllCity() {
-        return null;
+        return List.of(new City(1, "Minsk"), new City(2, "Moscow"));
     }
 }
