@@ -17,7 +17,7 @@ public class CandidateServlet extends HttpServlet {
         Collection<Candidate> allCandidates = PsqlStore.instanceOf().findAllCandidates();
         req.setAttribute("candidates", allCandidates);
         req.setAttribute("user", req.getSession().getAttribute("user"));
-        req.getRequestDispatcher("candidates.jsp").forward(req, resp);
+        req.getRequestDispatcher("candidate/candidates.jsp").forward(req, resp);
     }
 
     @Override
