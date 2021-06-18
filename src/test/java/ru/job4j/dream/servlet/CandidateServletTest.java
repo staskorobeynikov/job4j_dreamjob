@@ -46,7 +46,7 @@ public class CandidateServletTest {
 
         new CandidateServlet().doGet(req, resp);
 
-        verify(req).getRequestDispatcher("candidates.jsp");
+        verify(req).getRequestDispatcher("candidate/candidates.jsp");
     }
 
     @Test

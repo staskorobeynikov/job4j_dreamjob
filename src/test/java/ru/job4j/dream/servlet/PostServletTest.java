@@ -46,7 +46,7 @@ public class PostServletTest {
 
         new PostServlet().doGet(req, resp);
 
-        verify(req).getRequestDispatcher("posts.jsp");
+        verify(req).getRequestDispatcher("post/posts.jsp");
     }
 
     @Test
