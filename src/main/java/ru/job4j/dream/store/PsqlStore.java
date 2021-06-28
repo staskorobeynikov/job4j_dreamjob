@@ -365,6 +365,7 @@ public class PsqlStore implements Store {
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
+            throw new IllegalArgumentException("Нарушение ограничения уникальности поля email.");
         }
         return user;
     }
