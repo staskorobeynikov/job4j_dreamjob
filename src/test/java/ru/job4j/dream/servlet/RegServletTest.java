@@ -67,11 +67,17 @@ public class RegServletTest {
         PowerMockito.mockStatic(PsqlStore.class);
 
         Store store = MemStore.instanceOf();
+        store.createUser(new User(0, "", "root@local", ""));
 
         when(PsqlStore.instanceOf()).thenReturn(store);
         when(req.getParameter("name")).thenReturn("Admin2");
         when(req.getParameter("email")).thenReturn("root@local");
         when(req.getParameter("password")).thenReturn("root");
+        when(PsqlStore.instanceOf().createUser(
+                new User(0, "", "root@local", "")
+        )).thenThrow(
+                IllegalArgumentException.class
+        );
         when(req.getRequestDispatcher(any())).thenReturn(dispatcher);
 
         new RegServlet().doPost(req, resp);
