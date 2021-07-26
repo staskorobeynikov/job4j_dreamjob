@@ -119,6 +119,16 @@ public class MemStore implements Store {
     }
 
     @Override
+    public User findUserById(int id) {
+        return null;
+    }
+
+    @Override
+    public void updateUser(User user) {
+
+    }
+
+    @Override
     public Collection<City> findAllCity() {
         return List.of(new City(1, "Minsk"), new City(2, "Moscow"));
     }

@@ -371,6 +371,46 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public User findUserById(int id) {
+        User result = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "select * from users where id = ?"
+             )
+        ) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                result = new User(
+                        rs.getInt(1),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return result;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "update users set name = ?, password = ? where id = ?"
+             )
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Collection<City> findAllCity() {
         List<City> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();

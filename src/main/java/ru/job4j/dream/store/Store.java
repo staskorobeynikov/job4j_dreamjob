@@ -30,5 +30,9 @@ public interface Store {
 
     User createUser(User user);
 
+    User findUserById(int id);
+
+    void updateUser(User user);
+
     Collection<City> findAllCity();
 }

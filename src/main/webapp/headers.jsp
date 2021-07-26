@@ -40,7 +40,10 @@
                         Anonymous | Войти
                     </c:when>
                     <c:otherwise>
-                        <c:out value="${user.name}"/> | Войти
+                        <a href='<c:url value="/users.do?id=${user.id}"/>'>
+                            <i class="fa fa-edit mr-3"></i>
+                        </a>
+                        <c:out value="${user.name}"/>
                     </c:otherwise>
                 </c:choose>
             </a>
