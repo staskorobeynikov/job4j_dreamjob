@@ -120,7 +120,7 @@ public class MemStore implements Store {
 
     @Override
     public User findUserById(int id) {
-        return null;
+        return users.get(id);
     }
 
     @Override
