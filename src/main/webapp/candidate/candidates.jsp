@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -33,6 +34,7 @@
                     <tr>
                         <th scope="col">Названия</th>
                         <th scope="col">Город</th>
+                        <th scope="col">Дата создания</th>
                         <th scope="col">Фото</th>
                     </tr>
                     </thead>
@@ -47,6 +49,9 @@
                             </td>
                             <td>
                                 <c:out value="${candidate.city}"/>
+                            </td>
+                            <td>
+                                <fmt:formatDate value="${candidate.created}" type="both" pattern='dd MMMM, EEEE, yyyy г.'/>
                             </td>
                             <td>
                                 <table>

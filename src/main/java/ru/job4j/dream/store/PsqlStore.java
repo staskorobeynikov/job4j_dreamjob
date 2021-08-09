@@ -105,7 +105,7 @@ public class PsqlStore implements Store {
         List<Candidate> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "SELECT candidate.id, name, photo_id, c.city FROM candidate "
+                     "SELECT candidate.id, name, photo_id, c.city, candidate.created FROM candidate "
                              + "JOIN cities c on candidate.city_id = c.id"
              )
         ) {
@@ -116,7 +116,8 @@ public class PsqlStore implements Store {
                                     it.getInt("id"),
                                     it.getString("name"),
                                     it.getInt("photo_id"),
-                                    it.getString("city")
+                                    it.getString("city"),
+                                    it.getTimestamp(5)
                             )
                     );
                 }
