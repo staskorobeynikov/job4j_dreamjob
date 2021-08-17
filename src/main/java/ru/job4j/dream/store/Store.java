@@ -12,6 +12,8 @@ public interface Store {
 
     Collection<Candidate> findAllCandidates();
 
+    Collection<Candidate> findCandidatesLastDay();
+
     void save(Post post);
 
     Post findPostById(int id);

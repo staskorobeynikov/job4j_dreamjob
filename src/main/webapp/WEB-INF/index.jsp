@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,7 +21,7 @@
 </head>
 <body>
 <div class="container">
-    <jsp:include page="headers.jsp"/>
+    <jsp:include page="../headers.jsp"/>
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -28,10 +29,10 @@
             </div>
             <div class="card-body">
                 <c:choose>
-                    <c:when test="${size == 0}">
+                    <c:when test="${posts == 0}">
                         Новых вакансий за сегодня нет
                     </c:when>
-                    <c:when test="${size != 0}">
+                    <c:when test="${posts != 0}">
                         <table class="table">
                             <thead>
                             <tr>
@@ -41,7 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${lastDay}" var="post">
+                            <c:forEach items="${postLastDay}" var="post">
                                 <tr>
                                     <td>
                                         <c:out value="${post.name}"/>
@@ -67,6 +68,41 @@
                 Сегодняшние кандидаты.
             </div>
             <div class="card-body">
+                <c:choose>
+                    <c:when test="${candidates == 0}">
+                        Новых вакансий за сегодня нет
+                    </c:when>
+                    <c:when test="${candidates != 0}">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Названия</th>
+                                <th scope="col">Город</th>
+                                <th scope="col">Дата создания</th>
+                                <th scope="col">Фото</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${candidateLastDay}" var="candidate">
+                                <tr>
+                                    <td>
+                                        <c:out value="${candidate.name}"/>
+                                    </td>
+                                    <td>
+                                        <c:out value="${candidate.city}"/>
+                                    </td>
+                                    <td>
+                                        <fmt:formatDate value="${candidate.created}" type="both" pattern='dd MMMM, EEEE, yyyy г.'/>
+                                    </td>
+                                    <td>
+                                        <img src="<c:url value='/download?photoId=${candidate.photoId}'/>" width="100px" height="100px"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:when>
+                </c:choose>
             </div>
         </div>
     </div>

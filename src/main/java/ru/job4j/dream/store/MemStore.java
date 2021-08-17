@@ -56,6 +56,11 @@ public class MemStore implements Store {
     }
 
     @Override
+    public Collection<Candidate> findCandidatesLastDay() {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void save(Post post) {
         if (post.getId() == 0) {
             post.setId(POST_ID.incrementAndGet());

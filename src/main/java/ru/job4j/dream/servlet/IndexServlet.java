@@ -1,5 +1,6 @@
 package ru.job4j.dream.servlet;
 
+import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.store.PsqlStore;
 
@@ -16,8 +17,11 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("user", req.getSession().getAttribute("user"));
         Collection<Post> posts = PsqlStore.instanceOf().findPostsLastDay();
-        req.setAttribute("size", posts.size());
-        req.setAttribute("lastDay", posts);
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        Collection<Candidate> candidates = PsqlStore.instanceOf().findCandidatesLastDay();
+        req.setAttribute("posts", posts.size());
+        req.setAttribute("postLastDay", posts);
+        req.setAttribute("candidates", candidates.size());
+        req.setAttribute("candidateLastDay", candidates);
+        req.getRequestDispatcher("WEB-INF/index.jsp").forward(req, resp);
     }
 }
