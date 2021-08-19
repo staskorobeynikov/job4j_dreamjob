@@ -26,7 +26,7 @@ public class IndexServletTest {
 
         new IndexServlet().doGet(req, resp);
 
-        verify(req).getRequestDispatcher("index.jsp");
+        verify(req).getRequestDispatcher("WEB-INF/index.jsp");
         verify(dispatcher).forward(req, resp);
     }
 }
