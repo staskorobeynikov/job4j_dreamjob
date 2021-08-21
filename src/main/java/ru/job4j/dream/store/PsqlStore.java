@@ -133,9 +133,9 @@ public class PsqlStore implements Store {
         List<Candidate> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "SELECT candidate.id, name, photo_id, c.city, candidate.created FROM candidate " +
-                             "JOIN cities c on candidate.city_id = c.id " +
-                             "WHERE candidate.created between now() - interval '24 hours' and now()"
+                     "SELECT candidate.id, name, photo_id, c.city, candidate.created FROM candidate "
+                             + "JOIN cities c on candidate.city_id = c.id "
+                             + "WHERE candidate.created between now() - interval '24 hours' and now()"
              )
         ) {
             try (ResultSet it = ps.executeQuery()) {
