@@ -23,24 +23,24 @@
 <div class="row">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/"><i class="fa fa-home" aria-hidden="true"></i></a>
+            <a class="nav-link" href='<c:url value="/"/>'><i class="fa fa-home" aria-hidden="true"></i></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/posts.do">Вакансии</a>
+            <a class="nav-link" href='<c:url value="/posts.do"/>'>Вакансии</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do">Кандидаты</a>
+            <a class="nav-link" href='<c:url value="/candidates.do"/>'>Кандидаты</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
+            <a class="nav-link" href='<c:url value="/post/edit.jsp"/>'>Добавить вакансию</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
+            <a class="nav-link" href='<c:url value="/candidate/edit.jsp"/>'>Добавить кандидата</a>
         </li>
         <li class="nav-item">
             <c:choose>
                 <c:when test="${user == null}">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                    <a class="nav-link" href='<c:url value="/login.jsp"/>'>
                         Anonymous | Войти
                     </a>
                 </c:when>
@@ -53,7 +53,7 @@
         </li>
         <c:if test="${user != null}">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
+                <a class="nav-link" href='<c:url value="/logout.do"/>'>Выйти</a>
             </li>
         </c:if>
     </ul>
