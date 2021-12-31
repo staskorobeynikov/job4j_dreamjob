@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.PsqlStore" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
-<%@ page import="java.sql.Timestamp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,33 +38,29 @@
     }
 </script>
 <body>
-<%
-    String id = request.getParameter("id");
-    Post post = new Post(0, "", "", null);
-    if (id != null) {
-        post = PsqlStore.instanceOf().findPostById(Integer.parseInt(id));
-    }
-%>
 <div class="container pt-3">
     <jsp:include page="/headers.jsp"/>
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                    Новая вакансия.
-                <% } else { %>
-                    Редактирование вакансии.
-                <% } %>
+                <c:choose>
+                    <c:when test="${post.id == 0}">
+                        Новая вакансия.
+                    </c:when>
+                    <c:otherwise>
+                        Редактирование вакансии.
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
+                <form action="<c:url value="/posts.do?id=${post.id}"/>" method="post">
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<%=post.getName()%>" placeholder="Введите ваше имя...">
+                        <input type="text" class="form-control" id="name" name="name" value="<c:out value="${post.name}"/>" placeholder="Введите ваше имя...">
                     </div>
                     <div class="form-group">
                         <label for="description">Описание</label>
-                        <input type="text" class="form-control" id="description" name="description" value="<%=post.getDescription()%>" placeholder="Введите описание...">
+                        <input type="text" class="form-control" id="description" name="description" value="<c:out value="${post.description}"/>" placeholder="Введите описание...">
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="validate()">Сохранить</button>
                 </form>

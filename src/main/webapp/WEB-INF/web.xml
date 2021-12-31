@@ -130,4 +130,14 @@
     <servlet-name>UserServlet</servlet-name>
     <url-pattern>/users.do</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PostEditServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.PostEditServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PostEditServlet</servlet-name>
+    <url-pattern>/post/edit.do</url-pattern>
+  </servlet-mapping>
 </web-app>
