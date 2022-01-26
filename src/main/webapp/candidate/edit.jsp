@@ -41,26 +41,29 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                    <% if (photoId == null) { %>
-                        <a href='<c:redirect url="/upload"/>'></a>
-                    <% } else { %>
-                        Новый кандидат.
-                    <% } %>
-                <% } else { %>
-                    Редактирование кандидата.
-                <% } %>
+                <c:choose>
+                    <c:when test="${candidate.id == 0}">
+                        <% if (photoId == null) { %>
+                            <a href='<c:redirect url="/upload"/>'></a>
+                        <% } else { %>
+                            Новый кандидат.
+                        <% } %>
+                    </c:when>
+                    <c:otherwise>
+                        Редактирование кандидата.
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
+                <form action="<c:url value="/candidates.do?id=${candidate.id}"/>" method="post">
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<%=candidate.getName()%>" placeholder="Введите ваше имя...">
+                        <input type="text" class="form-control" id="name" name="name" value="<c:out value="${candidate.name}"/>" placeholder="Введите ваше имя...">
                     </div>
                     <div class="form-group">
                         <label for="city">Город</label>
                         <select class="custom-select" id="city" name="city">
-                            <option value="<%=candidate.getCityId()%>" selected><%=candidate.getCity()%></option>
+                            <option value="<c:out value="${candidate.cityId}"/>" selected><c:out value="${candidate.city}"/></option>
                         </select>
                         <input type="hidden" name="photoId" value="<%=photoId%>">
                     </div>

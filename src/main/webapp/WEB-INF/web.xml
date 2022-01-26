@@ -140,4 +140,14 @@
     <servlet-name>PostEditServlet</servlet-name>
     <url-pattern>/post/edit.do</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CandidateEditServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.CandidateEditServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>CandidateEditServlet</servlet-name>
+    <url-pattern>/candidate/edit.do</url-pattern>
+  </servlet-mapping>
 </web-app>
