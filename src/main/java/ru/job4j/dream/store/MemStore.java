@@ -137,4 +137,9 @@ public class MemStore implements Store {
     public Collection<City> findAllCity() {
         return List.of(new City(1, "Minsk"), new City(2, "Moscow"));
     }
+
+    @Override
+    public void updatePhoto(int id) {
+
+    }
 }

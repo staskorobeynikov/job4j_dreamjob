@@ -15,11 +15,10 @@ public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("photoId");
-        String name = PsqlStore.instanceOf().findPhotoById(Integer.parseInt(id)).getTitle();
-        resp.setContentType("name=" + name);
+        resp.setContentType("name=" + id);
         resp.setContentType("image/png");
-        resp.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
-        File file = new File("c:/bin/images" + File.separator + name);
+        resp.setHeader("Content-Disposition", "attachment; filename=\"" + id + "\"");
+        File file = new File("c:/bin/images" + File.separator + id + ".png");
         try (FileInputStream in = new FileInputStream(file)) {
             resp.getOutputStream().write(in.readAllBytes());
         }

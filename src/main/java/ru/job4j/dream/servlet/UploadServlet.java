@@ -23,29 +23,20 @@ public class UploadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String redict = "";
-        if (req.getAttribute("photoId") == null) {
-            List<String> images = new ArrayList<>();
-            for (File name : new File("c:/bin/images").listFiles()) {
-                images.add(name.getName());
-            }
-            req.setAttribute("images", images);
-            redict = "/upload.jsp";
-        } else {
-            redict = "/candidate/edit.jsp";
-        }
-        RequestDispatcher dispatcher = req.getRequestDispatcher(redict);
+        String id = req.getParameter("id");
+        req.setAttribute("canId", id);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/upload.jsp");
         dispatcher.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Photo result = null;
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
         factory.setRepository(repository);
         ServletFileUpload upload = new ServletFileUpload(factory);
+        String id = req.getParameter("id");
         try {
             List<FileItem> items = upload.parseRequest(req);
             File folder = new File("c:/bin/images");
@@ -54,9 +45,8 @@ public class UploadServlet extends HttpServlet {
             }
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    String name = this.getName(item.getName());
-                    result = PsqlStore.instanceOf().createPhoto(new Photo(0, name));
-                    File file = new File(folder + File.separator + name);
+                    PsqlStore.instanceOf().updatePhoto(Integer.parseInt(id));
+                    File file = new File(folder + File.separator + id + ".png");
                     try (FileOutputStream out = new FileOutputStream(file)) {
                         out.write(item.getInputStream().readAllBytes());
                     }
@@ -65,26 +55,6 @@ public class UploadServlet extends HttpServlet {
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        req.setAttribute("photoId", String.valueOf(result.getId()));
-        doGet(req, resp);
-    }
-
-    private boolean isValidName(String name) {
-        boolean result = false;
-        for (String str : PsqlStore.instanceOf().findAllNamePhoto()) {
-            if (str.equals(name)) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
-    private String getName(String name) {
-        while (this.isValidName(name)) {
-            String[] splitName = name.split("\\.");
-            name = String.format("%s_1.%s", splitName[0], splitName[1]);
-        }
-        return name;
+        resp.sendRedirect(req.getContextPath() + "/candidates.do");
     }
 }

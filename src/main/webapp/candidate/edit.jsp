@@ -23,19 +23,6 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
 
 <body>
-<%
-    String id = request.getParameter("id");
-    Candidate candidate = new Candidate(0, "", 0);
-    if (id != null) {
-        candidate = PsqlStore.instanceOf().findCandidateById(Integer.parseInt(id));
-    }
-%>
-<%
-    String photoId = (String) request.getAttribute("photoId");
-    if (photoId == null && candidate.getId() > 0) {
-        photoId = String.valueOf(candidate.getPhotoId());
-    }
-%>
 <div class="container pt-3">
     <jsp:include page="/headers.jsp"/>
     <div class="row">
@@ -43,11 +30,7 @@
             <div class="card-header">
                 <c:choose>
                     <c:when test="${candidate.id == 0}">
-                        <% if (photoId == null) { %>
-                            <a href='<c:redirect url="/upload"/>'></a>
-                        <% } else { %>
-                            Новый кандидат.
-                        <% } %>
+                        Новый кандидат.
                     </c:when>
                     <c:otherwise>
                         Редактирование кандидата.
@@ -65,7 +48,6 @@
                         <select class="custom-select" id="city" name="city">
                             <option value="<c:out value="${candidate.cityId}"/>" selected><c:out value="${candidate.city}"/></option>
                         </select>
-                        <input type="hidden" name="photoId" value="<%=photoId%>">
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="validate()">Сохранить</button>
                 </form>

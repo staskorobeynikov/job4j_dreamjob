@@ -54,18 +54,36 @@
                                 <fmt:formatDate value="${candidate.created}" type="both" pattern='dd MMMM, EEEE, yyyy г.'/>
                             </td>
                             <td>
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <img src="<c:url value='/download?photoId=${candidate.photoId}'/>" width="100px" height="100px"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="text-align: center">
-                                        <td>
-                                            <a href="<c:url value='/download?photoId=${candidate.photoId}'/>">Download</a>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <c:choose>
+                                    <c:when test="${candidate.photoId == 0}">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <img src="<c:url value='/download?photoId=${candidate.photoId}'/>" width="100px" height="100px"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="text-align: center">
+                                                <td>
+                                                    <a href='<c:url value="/upload?id=${candidate.id}"/>'>Добавить фото</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <img src="<c:url value='/download?photoId=${candidate.id}'/>" width="100px" height="100px"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="text-align: center">
+                                                <td>
+                                                    <a href="<c:url value='/download?photoId=${candidate.id}'/>">Download</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                     </c:forEach>

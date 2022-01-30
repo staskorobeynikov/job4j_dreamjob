@@ -338,6 +338,20 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public void updatePhoto(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE candidate SET photo_id = ? WHERE id = ?"
+             )) {
+            ps.setInt(1, id);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public List<String> findAllNamePhoto() {
         List<String> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();

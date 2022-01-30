@@ -37,4 +37,6 @@ public interface Store {
     void updateUser(User user);
 
     Collection<City> findAllCity();
+
+    public void updatePhoto(int id);
 }
