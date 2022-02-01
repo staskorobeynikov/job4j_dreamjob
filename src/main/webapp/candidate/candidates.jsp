@@ -78,6 +78,11 @@
                                             </tr>
                                             <tr style="text-align: center">
                                                 <td>
+                                                    <a href="<c:url value='/delete?photoId=${candidate.id}'/>">Delete</a>
+                                                </td>
+                                            </tr>
+                                            <tr style="text-align: center">
+                                                <td>
                                                     <a href="<c:url value='/download?photoId=${candidate.id}'/>">Download</a>
                                                 </td>
                                             </tr>

@@ -4,7 +4,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.store.PsqlStore;
 
 import javax.servlet.RequestDispatcher;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UploadServlet extends HttpServlet {
@@ -45,7 +43,7 @@ public class UploadServlet extends HttpServlet {
             }
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    PsqlStore.instanceOf().updatePhoto(Integer.parseInt(id));
+                    PsqlStore.instanceOf().addPhoto(Integer.parseInt(id));
                     File file = new File(folder + File.separator + id + ".png");
                     try (FileOutputStream out = new FileOutputStream(file)) {
                         out.write(item.getInputStream().readAllBytes());

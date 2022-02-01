@@ -22,12 +22,6 @@ public interface Store {
 
     Candidate findCandidateById(int id);
 
-    Photo findPhotoById(int id);
-
-    Photo createPhoto(Photo photo);
-
-    List<String> findAllNamePhoto();
-
     User findByEmail(String email);
 
     User createUser(User user);
@@ -38,5 +32,7 @@ public interface Store {
 
     Collection<City> findAllCity();
 
-    public void updatePhoto(int id);
+    void addPhoto(int id);
+
+    void deletePhoto(int id);
 }

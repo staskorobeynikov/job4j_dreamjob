@@ -3,7 +3,6 @@ package ru.job4j.dream.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Test;
 import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Photo;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
@@ -12,7 +11,6 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -76,21 +74,6 @@ public class PsqlStoreTest {
         Candidate candidate = store.findCandidateById(1);
 
         assertThat(candidate.getName(), is("name10"));
-    }
-
-    @Test
-    public void whenTestMethodForPhoto()
-            throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_003.sql", false);
-
-        store.createPhoto(new Photo("name1"));
-        store.createPhoto(new Photo("name100"));
-
-        List<String> photo = store.findAllNamePhoto();
-        Photo byId = store.findPhotoById(2);
-
-        assertThat(photo.size(), is(2));
-        assertThat(byId.getTitle(), is("name100"));
     }
 
     @Test

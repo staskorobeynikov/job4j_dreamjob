@@ -150,4 +150,14 @@
     <servlet-name>CandidateEditServlet</servlet-name>
     <url-pattern>/candidate/edit.do</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeletePhotoCandidateServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.DeletePhotoCandidateServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>DeletePhotoCandidateServlet</servlet-name>
+    <url-pattern>/delete</url-pattern>
+  </servlet-mapping>
 </web-app>

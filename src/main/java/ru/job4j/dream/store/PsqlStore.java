@@ -297,48 +297,7 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Photo findPhotoById(int id) {
-        Photo result = null;
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(
-                     "SELECT * FROM photo WHERE id = ?"
-             )
-        ) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                result = new Photo(
-                        rs.getInt(1),
-                        rs.getString("title")
-                );
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return result;
-    }
-
-    @Override
-    public Photo createPhoto(Photo photo) {
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO photo(title) VALUES (?)",
-                     PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, photo.getTitle());
-            ps.execute();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    photo.setId(id.getInt(1));
-                }
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return photo;
-    }
-
-    @Override
-    public void updatePhoto(int id) {
+    public void addPhoto(int id) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      "UPDATE candidate SET photo_id = ? WHERE id = ?"
@@ -352,20 +311,16 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public List<String> findAllNamePhoto() {
-        List<String> result = new ArrayList<>();
+    public void deletePhoto(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT title FROM photo;")
-        ) {
-            try (ResultSet it = ps.executeQuery()) {
-                while (it.next()) {
-                    result.add(it.getString("title"));
-                }
-            }
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE candidate SET photo_id = 0 WHERE id = ?"
+             )) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
-        return result;
     }
 
     @Override

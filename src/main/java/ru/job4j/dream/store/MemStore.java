@@ -87,21 +87,6 @@ public class MemStore implements Store {
     }
 
     @Override
-    public Photo findPhotoById(int id) {
-        return null;
-    }
-
-    @Override
-    public Photo createPhoto(Photo photo) {
-        return null;
-    }
-
-    @Override
-    public List<String> findAllNamePhoto() {
-        return null;
-    }
-
-    @Override
     public User findByEmail(String email) {
         User result = null;
         List<User> list = new ArrayList<>(users.values());
@@ -139,7 +124,12 @@ public class MemStore implements Store {
     }
 
     @Override
-    public void updatePhoto(int id) {
+    public void addPhoto(int id) {
+
+    }
+
+    @Override
+    public void deletePhoto(int id) {
 
     }
 }
