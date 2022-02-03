@@ -1,7 +1,14 @@
-CREATE TABLE candidate (
-    id serial,
+CREATE TABLE if not exists cities (
+    id SERIAL PRIMARY KEY,
+    city TEXT
+);
+
+CREATE TABLE if not exists candidate (
+    id serial PRIMARY KEY,
     name VARCHAR(50),
     photo_id INT,
-    city_id INT,
-    PRIMARY KEY (id)
+    city_id integer references cities(id),
+    created TIMESTAMP
 );
+
+insert into cities(city) values ('Minsk')

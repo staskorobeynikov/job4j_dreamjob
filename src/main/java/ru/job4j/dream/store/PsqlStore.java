@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import ru.job4j.dream.model.*;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +23,12 @@ public class PsqlStore implements Store {
 
     private PsqlStore() {
         Properties config = new Properties();
-        try (BufferedReader io = new BufferedReader(new FileReader("db.properties"))) {
+        try (BufferedReader io = new BufferedReader(
+                new InputStreamReader(
+                        PsqlStore.class.getClassLoader()
+                                .getResourceAsStream("db.properties")
+                )
+        )) {
             config.load(io);
         } catch (Exception e) {
             throw new IllegalStateException(e);
