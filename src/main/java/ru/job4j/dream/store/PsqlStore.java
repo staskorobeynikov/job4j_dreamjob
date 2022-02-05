@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -81,12 +83,16 @@ public class PsqlStore implements Store {
 
     @Override
     public Collection<Post> findPostsLastDay() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime minusDay = now.minusDays(1);
         List<Post> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      "SELECT * FROM post as p "
-                             + "WHERE p.created between now() - interval '24 hours' and now()")
+                             + "WHERE p.created between ? and ?")
         ) {
+            ps.setTimestamp(1, Timestamp.valueOf(minusDay));
+            ps.setTimestamp(2, Timestamp.valueOf(now));
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     result.add(
@@ -135,14 +141,18 @@ public class PsqlStore implements Store {
 
     @Override
     public Collection<Candidate> findCandidatesLastDay() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime minusDay = now.minusDays(1);
         List<Candidate> result = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      "SELECT candidate.id, name, photo_id, c.city, candidate.created FROM candidate "
                              + "JOIN cities c on candidate.city_id = c.id "
-                             + "WHERE candidate.created between now() - interval '24 hours' and now()"
+                             + "WHERE candidate.created between ? and ?"
              )
         ) {
+            ps.setTimestamp(1, Timestamp.valueOf(minusDay));
+            ps.setTimestamp(2, Timestamp.valueOf(now));
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     result.add(
