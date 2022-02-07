@@ -35,4 +35,6 @@ public interface Store {
     void addPhoto(int id);
 
     void deletePhoto(int id);
+
+    void deleteAllUsers();
 }

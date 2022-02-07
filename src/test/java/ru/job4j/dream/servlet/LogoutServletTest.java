@@ -25,6 +25,6 @@ public class LogoutServletTest {
 
         new LogoutServlet().doGet(req, resp);
 
-        verify(req).getRequestDispatcher("index.jsp");
+        verify(resp).sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

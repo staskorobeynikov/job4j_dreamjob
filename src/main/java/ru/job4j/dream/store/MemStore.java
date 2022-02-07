@@ -132,4 +132,9 @@ public class MemStore implements Store {
     public void deletePhoto(int id) {
 
     }
+
+    @Override
+    public void deleteAllUsers() {
+
+    }
 }

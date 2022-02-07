@@ -1,14 +1,9 @@
 package ru.job4j.dream.servlet;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import ru.job4j.dream.model.User;
-import ru.job4j.dream.store.MemStore;
 import ru.job4j.dream.store.PsqlStore;
-import ru.job4j.dream.store.Store;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,9 +17,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(PsqlStore.class)
 public class RegServletTest {
+    @Before
+    public void setUp() {
+        PsqlStore.instanceOf().deleteAllUsers();
+    }
 
     @Test
     public void whenDoGetReturnViewReqJSP() throws ServletException, IOException {
@@ -43,17 +40,14 @@ public class RegServletTest {
     public void whenDoPostRedirectViewLoginJSPAndAddNewUser() throws ServletException, IOException {
         HttpServletRequest req = mock(HttpServletRequest.class);
         HttpServletResponse resp = mock(HttpServletResponse.class);
-        PowerMockito.mockStatic(PsqlStore.class);
 
-        Store store = MemStore.instanceOf();
-
-        when(PsqlStore.instanceOf()).thenReturn(store);
         when(req.getParameter("name")).thenReturn("Admin2");
         when(req.getParameter("email")).thenReturn("admin2@local");
         when(req.getParameter("password")).thenReturn("root");
 
         new RegServlet().doPost(req, resp);
-        User result = store.findByEmail("admin2@local");
+
+        User result = PsqlStore.instanceOf().findByEmail("admin2@local");
 
         verify(resp).sendRedirect(String.format("%s/login.jsp", req.getContextPath()));
         assertThat(result.getName(), is("Admin2"));
@@ -64,24 +58,20 @@ public class RegServletTest {
         HttpServletRequest req = mock(HttpServletRequest.class);
         HttpServletResponse resp = mock(HttpServletResponse.class);
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-        PowerMockito.mockStatic(PsqlStore.class);
 
-        Store store = MemStore.instanceOf();
-        store.createUser(new User(0, "", "root@local", ""));
+        PsqlStore.instanceOf().createUser(new User(0, "Admin152", "root@local", "root1000"));
 
-        when(PsqlStore.instanceOf()).thenReturn(store);
         when(req.getParameter("name")).thenReturn("Admin2");
         when(req.getParameter("email")).thenReturn("root@local");
         when(req.getParameter("password")).thenReturn("root");
-        when(PsqlStore.instanceOf().createUser(
-                new User(0, "", "root@local", "")
-        )).thenThrow(
-                IllegalArgumentException.class
-        );
+
         when(req.getRequestDispatcher(any())).thenReturn(dispatcher);
 
         new RegServlet().doPost(req, resp);
 
+        User result = PsqlStore.instanceOf().findByEmail("root@local");
+
         verify(req).getRequestDispatcher("reg.jsp");
+        assertThat(result.getName(), is("Admin152"));
     }
 }

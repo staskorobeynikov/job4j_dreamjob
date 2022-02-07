@@ -445,4 +445,15 @@ public class PsqlStore implements Store {
         }
         return result;
     }
+
+    @Override
+    public void deleteAllUsers() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("delete from users;")
+        ) {
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
 }
