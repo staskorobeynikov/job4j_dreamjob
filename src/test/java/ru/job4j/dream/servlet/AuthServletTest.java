@@ -1,13 +1,9 @@
 package ru.job4j.dream.servlet;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import ru.job4j.dream.store.MemStore;
+import ru.job4j.dream.model.User;
 import ru.job4j.dream.store.PsqlStore;
-import ru.job4j.dream.store.Store;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,20 +15,23 @@ import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(PsqlStore.class)
 public class AuthServletTest {
+
+    @Before
+    public void setUp() {
+        PsqlStore.instanceOf().deleteAllUsers();
+    }
 
     @Test
     public void whenDoPostRedirectViewPostsJSP() throws ServletException, IOException {
         HttpServletRequest req = mock(HttpServletRequest.class);
         HttpServletResponse resp = mock(HttpServletResponse.class);
-        PowerMockito.mockStatic(PsqlStore.class);
         HttpSession session = mock(HttpSession.class);
 
-        Store store = MemStore.instanceOf();
+        PsqlStore.instanceOf().createUser(new User(
+                0, "Admin152", "root@local", "root"
+        ));
 
-        when(PsqlStore.instanceOf()).thenReturn(store);
         when(req.getParameter("email")).thenReturn("root@local");
         when(req.getParameter("password")).thenReturn("root");
         when(req.getSession()).thenReturn(session);
@@ -47,11 +46,7 @@ public class AuthServletTest {
         HttpServletRequest req = mock(HttpServletRequest.class);
         HttpServletResponse resp = mock(HttpServletResponse.class);
         RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-        PowerMockito.mockStatic(PsqlStore.class);
 
-        Store store = MemStore.instanceOf();
-
-        when(PsqlStore.instanceOf()).thenReturn(store);
         when(req.getParameter("email")).thenReturn("root@local");
         when(req.getParameter("password")).thenReturn("");
         when(req.getRequestDispatcher(any())).thenReturn(dispatcher);
