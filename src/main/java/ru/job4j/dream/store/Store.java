@@ -3,7 +3,6 @@ package ru.job4j.dream.store;
 import ru.job4j.dream.model.*;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface Store {
     Collection<Post> findAllPosts();
@@ -35,6 +34,4 @@ public interface Store {
     void addPhoto(int id);
 
     void deletePhoto(int id);
-
-    void deleteAllUsers();
 }

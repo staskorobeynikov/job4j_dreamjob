@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
-public class PsqlStore implements Store {
+public class PsqlStore implements Store, Cleaner {
 
     private static final Logger LOG = LogManager.getLogger(PsqlStore.class);
 
@@ -50,10 +50,10 @@ public class PsqlStore implements Store {
     }
 
     private static final class Lazy {
-        private static final Store INSTANCE = new PsqlStore();
+        private static final PsqlStore INSTANCE = new PsqlStore();
     }
 
-    public static Store instanceOf() {
+    public static PsqlStore instanceOf() {
         return Lazy.INSTANCE;
     }
 
@@ -450,6 +450,17 @@ public class PsqlStore implements Store {
     public void deleteAllUsers() {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("delete from users;")
+        ) {
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void deleteAllCandidates() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("delete from candidate;")
         ) {
             ps.executeUpdate();
         } catch (Exception e) {

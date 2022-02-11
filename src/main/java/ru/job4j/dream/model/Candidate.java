@@ -41,13 +41,6 @@ public class Candidate {
         this.cityId = cityId;
     }
 
-    public Candidate(int id, String name, int photoId, String city) {
-        this.id = id;
-        this.name = name;
-        this.photoId = photoId;
-        this.city = city;
-    }
-
     public Candidate(int id, String name, int photoId, int cityId, String city) {
         this.id = id;
         this.name = name;

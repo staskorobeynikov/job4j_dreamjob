@@ -1,95 +1,55 @@
 package ru.job4j.dream.store;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.dream.model.Candidate;
-import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
-
-import java.io.*;
-import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Collection;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-@Ignore
 public class PsqlStoreTest {
-    private Store init(String fileName, boolean flag)
-            throws SQLException, NoSuchFieldException, IllegalAccessException {
-        BasicDataSource pool = new BasicDataSource();
-        pool.setDriverClassName("org.hsqldb.jdbcDriver");
-        pool.setUrl("jdbc:hsqldb:mem:dreamjob;sql.syntax_pgs=true");
-        pool.setUsername("sa");
-        pool.setPassword("");
-        pool.setMaxTotal(5);
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream(fileName)))
-        ) {
-            br.lines().forEach(line -> builder.append(line).append(System.lineSeparator()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        pool.getConnection().prepareStatement(builder.toString()).executeUpdate();
-        if (flag) {
-            pool.getConnection().prepareStatement(
-                    "CREATE TABLE cities (id serial, city VARCHAR(50), PRIMARY KEY (id))"
-            ).executeUpdate();
-            pool.getConnection().prepareStatement(
-                    "INSERT into cities (city) values ('city1')"
-            ).executeUpdate();
-        }
-        Store store = PsqlStore.instanceOf();
-        Field field = store.getClass().getDeclaredField("pool");
-        field.setAccessible(true);
-        field.set(store, pool);
-        return store;
+
+    @Before
+    public void setUp() {
+        PsqlStore.instanceOf().deleteAllUsers();
+        PsqlStore.instanceOf().deleteAllCandidates();
     }
 
     @Test
-    public void whenTestMethodForPost()
-            throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_002.sql", false);
+    public void whenFindByIdUser() {
+        User user = PsqlStore.instanceOf().createUser(new User(
+                0, "Admin152444", "root121212@local", "root1789"
+        ));
 
-        store.save(new Post(0, "name1", "desc1", new Timestamp(System.currentTimeMillis())));
-        store.save(new Post(1, "name2", "desc2", new Timestamp(System.currentTimeMillis())));
+        User userById = PsqlStore.instanceOf().findUserById(user.getId());
 
-        Collection<Post> allPosts = store.findAllPosts();
-        Post postById = store.findPostById(1);
-
-        assertThat(allPosts.size(), is(1));
-        assertThat(postById.getDescription(), is("desc2"));
+        assertThat(userById.getEmail(), is("root121212@local"));
     }
 
     @Test
-    public void whenTestMethodForCandidate()
-            throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_001.sql", true);
+    public void whenUpdatePhotoForCandidate() {
+        Candidate candidate = new Candidate(0, "First_Name_Its_Mine", 0, 1);
+        PsqlStore.instanceOf().save(candidate);
 
-        store.save(new Candidate(0, "name1", 1, 1));
-        store.save(new Candidate(1, "name10", 1, 1));
+        PsqlStore.instanceOf().addPhoto(candidate.getId());
 
-        Candidate candidate = store.findCandidateById(1);
+        Candidate candidateById = PsqlStore.instanceOf().findCandidateById(candidate.getId());
 
-        assertThat(candidate.getName(), is("name10"));
+        assertThat(candidateById.getPhotoId(), is(candidate.getId()));
+        assertThat(candidateById.getName(), is("First_Name_Its_Mine"));
     }
 
     @Test
-    public void whenTestMethodForUser()
-            throws NoSuchFieldException, IllegalAccessException, SQLException {
-        Store store = this.init("./db/update_004.sql", false);
+    public void whenDeletePhotoForCandidate() {
+        Candidate candidate = new Candidate(0, "First_Name_Its_Yours", 10, 1);
+        PsqlStore.instanceOf().save(candidate);
 
-        store.createUser(new User(0, "root", "root@local", "root"));
-        store.createUser(new User(0, "root100", "root100@local", "root"));
+        PsqlStore.instanceOf().deletePhoto(candidate.getId());
 
-        User byEmail = store.findByEmail("root100@local");
-        User byEmail1 = store.findByEmail("root@local");
+        Candidate candidateById = PsqlStore.instanceOf().findCandidateById(candidate.getId());
 
-        assertThat(byEmail.getName(), is("root100"));
-        assertThat(byEmail1.getPassword(), is("root"));
+        assertThat(candidateById.getPhotoId(), is(0));
+        assertThat(candidateById.getName(), is("First_Name_Its_Yours"));
     }
 }

@@ -45,7 +45,11 @@ public class CandidateServletTest {
         when(req.getParameter("city")).thenReturn(String.valueOf(1));
 
         new CandidateServlet().doPost(req, resp);
-        Candidate candidate = PsqlStore.instanceOf().findCandidateById(1);
+        Candidate candidate = PsqlStore.instanceOf().findAllCandidates()
+                .stream()
+                .filter(c -> c.getName().equals("Junior Java Developer"))
+                .findFirst()
+                .orElse(null);
 
         verify(resp).sendRedirect(String.format("%s/candidates.do", req.getContextPath()));
         assertThat(candidate.getName(), is("Junior Java Developer"));
