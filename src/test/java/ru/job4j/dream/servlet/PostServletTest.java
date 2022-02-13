@@ -44,7 +44,12 @@ public class PostServletTest {
         when(req.getParameter("description")).thenReturn("Требуется Junior Java Developer");
 
         new PostServlet().doPost(req, resp);
-        Post post = PsqlStore.instanceOf().findPostById(1);
+        Post post = PsqlStore.instanceOf()
+                .findAllPosts()
+                .stream()
+                .filter(p -> p.getName().equals("Junior Java Developer"))
+                .findFirst()
+                .get();
 
         verify(resp).sendRedirect(String.format("%s/posts.do", req.getContextPath()));
         assertThat(post.getDescription(), is("Требуется Junior Java Developer"));

@@ -5,4 +5,6 @@ public interface Cleaner {
     void deleteAllUsers();
 
     void deleteAllCandidates();
+
+    void deleteAllPosts();
 }

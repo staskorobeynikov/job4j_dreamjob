@@ -467,4 +467,15 @@ public class PsqlStore implements Store, Cleaner {
             LOG.error(e.getMessage(), e);
         }
     }
+
+    @Override
+    public void deleteAllPosts() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("delete from post;")
+        ) {
+            ps.executeUpdate();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
 }

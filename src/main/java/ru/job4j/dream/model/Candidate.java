@@ -15,7 +15,7 @@ public class Candidate {
 
     private String city;
 
-    private Timestamp created;
+    private Timestamp created = new Timestamp(System.currentTimeMillis());
 
     public Candidate(
             int id, String name, int photoId,

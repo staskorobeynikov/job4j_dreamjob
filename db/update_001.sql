@@ -8,7 +8,7 @@ CREATE TABLE if not exists candidate (
     name VARCHAR(50),
     photo_id INT,
     city_id integer references cities(id),
-    created TIMESTAMP
+    created TIMESTAMP default now()
 );
 
 insert into cities(city) values ('Minsk')
